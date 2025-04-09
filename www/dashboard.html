@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZZO Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #00bcd4;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #00bcd4;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #222;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .create-quiz {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .create-quiz button {
+            background: #00bcd4;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .create-quiz button:hover {
+            background: #0097a7;
+        }
+
+        #leaderboard-list {
+  max-height: 200px;     /* You can adjust height */
+  overflow-y: auto;
+  padding-right: 10px;   /* Optional, to avoid scroll bar overlapping text */
+}
+
+/* Optional: Style scrollbar (for WebKit browsers) */
+#leaderboard-list::-webkit-scrollbar {
+  width: 8px;
+}
+#leaderboard-list::-webkit-scrollbar-thumb {
+  background: #00ffff; /* Light blue */
+  border-radius: 4px;
+}
+#leaderboard-list::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .search-box {
+    position: relative;
+    width: 500px;
+  }
+
+  #quiz-search {
+    padding: 15px 20px;
+    width: 100%;
+    border: 2px solid #007BFF;
+    border-radius: 30px;
+    font-size: 18px;
+    outline: none;
+  }
+
+  #quiz-search:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 12px rgba(40, 167, 69, 0.4);
+  }
+
+  #clear-btn {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #888;
+  cursor: pointer;
+  display: none;
+  user-select: none;
+}
+
+  .dropdown-results {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  .dropdown-results a {
+    display: block;
+    padding: 12px 15px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+  }
+
+  .dropdown-results a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .search-button {
+    padding: 15px 25px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .search-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+    </style>
+<script>
+
+    function fetchProfile() {
+        fetch("http://localhost/cgi-bin/dashboard.cgi")
+            .then(response => response.json())
+            .then(data => {
+                const usernameElement = document.getElementById("username");
+                const scoreElement = document.getElementById("score");
+                const rankElement = document.getElementById("rank");
+
+                if (!usernameElement || !scoreElement || !rankElement) {
+                    console.error("Profile elements not found in the DOM.");
+                    return;
+                }
+
+                usernameElement.innerHTML = data.username;
+                scoreElement.innerHTML = data.score;
+                rankElement.innerHTML = data.rank;
+            })
+            .catch(error => console.error("Error fetching profile:", error));
+    }
+    function fetchLeaderboard() {
+        fetch("http://localhost/cgi-bin/leaderboard.cgi")
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById("leaderboard-list");
+                list.innerHTML = ""; // clear existing
+
+                if (data.error) {
+                    list.innerHTML = `<li>${data.error}</li>`;
+                    return;
+                }
+
+                data.leaderboard.forEach(entry => {
+                    const li = document.createElement("li");
+                    li.innerText = `${entry.rank} ${entry.name} - ${entry.score}`;
+                    list.appendChild(li);
+                });
+            })
+            .catch(err => {
+                document.getElementById("leaderboard-list").innerHTML = `<li>Error loading leaderboard</li>`;
+                console.error(err);
+            });
+    }
+
+    function searchQuiz() {
+    const input = document.getElementById("quiz-search");
+    const query = input.value.trim();
+    const results = document.getElementById("results");
+    const clearBtn = document.getElementById("clear-btn");
+
+    if (query.length > 0) {
+      clearBtn.style.display = "block";
+    } else {
+      clearBtn.style.display = "none";
+      results.innerHTML = "";
+      return;
+    }
+
+    fetch(`http://localhost:5000/search?q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        results.innerHTML = "";
+
+        if (data.length === 0) {
+          results.innerHTML = "<div style='padding: 10px;'>No results found.</div>";
+        } else {
+          data.forEach(quiz => {
+            const el = document.createElement("a");
+            el.href = quiz.file;
+            el.innerText = quiz.title;
+            results.appendChild(el);
+          });
+        }
+      })
+      .catch(err => {
+        results.innerHTML = "<div style='padding: 10px;'>Error fetching results.</div>";
+        console.error(err);
+      });
+  }
+
+  function clearSearch() {
+    document.getElementById("quiz-search").value = "";
+    document.getElementById("results").innerHTML = "";
+    document.getElementById("clear-btn").style.display = "none";
+  }
+
+    window.onload = function () {
+        fetchProfile();
+        fetchLeaderboard(); // Fetch leaderboard on load
+        const searchBox = document.getElementById("quiz-search");
+    if (searchBox) {
+        searchBox.addEventListener("input", searchQuiz);
+    }
+    };
+</script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Welcome to QUIZZO</h1>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box">
+              <input type="text" id="quiz-search" placeholder="Search for quizzes..." oninput="searchQuiz()">
+              <span id="clear-btn" onclick="clearSearch()">✖</span>
+              <div id="results" class="dropdown-results"></div>
+            </div>
+          </div>
+          
+
+        <div class="dashboard-grid">
+            <div class="section">
+                <h2>Profile</h2>
+                <div id="profile">
+                <p><strong>Username:</strong> <span id="username">Loading...</span></p>
+                <p><strong>Rank:</strong> <span id="rank">Loading...</span></p>
+                <p><strong>Score:</strong> <span id="score">Loading...</span></p>
+            </div>
+            </div>
+            
+            <div class="section">
+                <h2>Leaderboard</h2>
+                <ul id="leaderboard-list">
+                    <li>Loading...</li>
+                </ul>
+            </div>
+            
+            
+            <div class="section">
+                <h2>Available Quizzes</h2>
+                <ul>
+                    <li>🧠 <a href="generalknowledge.html">General Knowledge</a></li>
+                    <li>💻 <a href="programming.html">Programming</a></li>
+                    <li>🔬 <a href="science.html">Science</a></li>
+                    <li>🎭 <a href="entertainment.html">Entertainment</a></li>
+                    <li>📜 <a href="history.html">History</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        
+    </div>
+</body>
+</html>

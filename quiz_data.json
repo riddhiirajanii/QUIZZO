@@ -1,0 +1,83 @@
+[
+  {
+    "title": "General Knowledge",
+    "file": "generalknowledge.html",
+    "tags": ["world", "facts", "current affairs", "trivia"]
+  },
+  {
+    "title": "Programming",
+    "file": "programming.html",
+    "tags": ["c", "python", "code", "logic", "data structures"]
+  },
+  {
+    "title": "Science",
+    "file": "science.html",
+    "tags": ["physics", "biology", "chemistry", "experiments", "facts"]
+  },
+  {
+    "title": "Entertainment",
+    "file": "entertainment.html",
+    "tags": ["movies", "music", "celebs", "fun", "tv shows"]
+  },
+  {
+    "title": "History",
+    "file": "history.html",
+    "tags": ["wars", "events", "kings", "ancient", "freedom"]
+  },
+  {
+    "title": "Space and Astronomy",
+    "file": "space.html",
+    "tags": ["stars", "planets", "nasa", "galaxies"]
+  },
+  {
+    "title": "Technology",
+    "file": "technology.html",
+    "tags": ["gadgets", "internet", "AI", "innovation"]
+  },
+  {
+    "title": "Art and Culture",
+    "file": "art.html",
+    "tags": ["paintings", "sculpture", "music", "dance"]
+  },
+  {
+    "title": "Nature",
+    "file": "nature.html",
+    "tags": ["animals", "plants", "ecosystem", "environment"]
+  },
+  {
+    "title": "Mythology",
+    "file": "mythology.html",
+    "tags": ["gods", "legends", "stories", "folklore"]
+  },
+  {
+    "title": "Health and Medicine",
+    "file": "health.html",
+    "tags": ["diseases", "treatment", "nutrition", "fitness"]
+  },
+  {
+    "title": "Geography",
+    "file": "geography.html",
+    "tags": ["countries", "capitals", "maps", "oceans"]
+  },
+  {
+    "title": "Sports",
+    "file": "sports.html",
+    "tags": ["football", "cricket", "tennis", "games"]
+  },
+  {
+    "title": "Mathematics",
+    "file": "maths.html",
+    "tags": ["algebra", "geometry", "calculus", "numbers"]
+  },
+  {
+    "title": "Food and Drink",
+    "file": "food.html",
+    "tags": ["cuisine", "recipes", "ingredients"]
+  },
+  {
+    "title": "Literature",
+    "file": "literature.html",
+    "tags": ["books", "authors", "poetry"]
+  }
+    
+]
