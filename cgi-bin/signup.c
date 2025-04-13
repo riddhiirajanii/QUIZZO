@@ -7,10 +7,14 @@
 #define MAX_LENGTH 100
 
 typedef struct User {
-    char username[MAX_LENGTH];
-    char password[MAX_LENGTH];
+    char username[100];
+    char password[100];
     int score;
     int rank;
+    char email[100];
+    char phonenumber[20];
+    char course[100];
+    char rollnumber[100];
     struct User *next;
 } User;
 
@@ -80,7 +84,8 @@ void removeExistingSession(const char *username) {
     }
 }
 
-void registerUser(const char *username, const char *password) {
+void registerUser(const char *username, const char *password, const char *email, const char *phone, const char *course, const char *rollnumber){
+
     unsigned int index = hash(username);
 
     User *temp = hashTable[index];
@@ -103,12 +108,17 @@ void registerUser(const char *username, const char *password) {
     strcpy(newUser->password, password);
     newUser->score = 0;  
     newUser->rank = 0;   
+    strcpy(newUser->phonenumber, phone);
+    strcpy(newUser->email, email);
+    strcpy(newUser->course, course);
+    strcpy(newUser->rollnumber, rollnumber);    
     newUser->next = hashTable[index];
     hashTable[index] = newUser;
 
-    FILE *file = fopen("C:/QUIZZO/cgi-bin/users.txt", "a");
+    FILE *file = fopen("C:/xampp/cgi-bin/users.txt", "a");
+    
     if (file) {
-        fprintf(file, "%s %s %d %d\n", username, password, newUser->score, newUser->rank);
+        fprintf(file, "%s %s %d %d %s %s %s %s\n", username, password, newUser->score, newUser->rank, email, phone, course, rollnumber);
         fclose(file);
     } else {
         printf("Content-type: text/html\n\n");
@@ -166,11 +176,11 @@ void urlDecode(const char *src, char *dest, size_t maxLen) {
     *dest = '\0';
 }
 
-void getFormData(char *username, char *password, char *confirm_password) {
+void getFormData(char *username, char *password, char *confirm_password, char *email, char *phone, char *course, char *rollnumber) {
     char *lenstr;
     long len;
-    char input[MAX_LENGTH * 4];
-    char decodedInput[MAX_LENGTH * 4];
+    char input[MAX_LENGTH * 6];
+    char decodedInput[MAX_LENGTH * 6];
 
     lenstr = getenv("CONTENT_LENGTH");
     if (lenstr == NULL || sscanf(lenstr, "%ld", &len) != 1 || len > sizeof(input) - 1) {
@@ -186,13 +196,16 @@ void getFormData(char *username, char *password, char *confirm_password) {
     }
 
     urlDecode(input, decodedInput, sizeof(decodedInput));
-    if (sscanf(decodedInput, "username=%99[^&]&email=%*[^&]&password=%99[^&]&confirm_password=%99[^&]",
-               username, password, confirm_password) != 3) {
+    if (sscanf(decodedInput,
+        "username=%99[^&]&email=%99[^&]&password=%99[^&]&confirm_password=%99[^&]&phone=%14[^&]&course=%99[^&]&rollnumber=%99s",
+        username, email, password, confirm_password, phone, course, rollnumber) != 7) {
+        
         printf("Content-type: text/html\n\n");
         printf("<html><body><h3>Error: Invalid form data</h3></body></html>\n");
         exit(1);
     }
-
+    
+    
 
     if (strcmp(password, confirm_password) != 0) {
         printf("Content-type: text/html\n\n");
@@ -201,15 +214,17 @@ void getFormData(char *username, char *password, char *confirm_password) {
     }
 }
 
+
 int main() {
     srand(time(NULL)); // Initialize random seed
 
     printf("Content-type: text/html\n\n");  // CGI header
 
     char username[MAX_LENGTH], password[MAX_LENGTH], confirm_password[MAX_LENGTH];
+    char email[MAX_LENGTH], phone[15], course[MAX_LENGTH], rollnumber[MAX_LENGTH];
 
-    getFormData(username, password, confirm_password);
-    registerUser(username, password);
+    getFormData(username, password, confirm_password, email, phone, course, rollnumber);
+    registerUser(username, password, email, phone, course, rollnumber);
 
     return 0;
 }

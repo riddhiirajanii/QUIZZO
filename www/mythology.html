@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Knowledge Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.quiz-container {
+    width: 70%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+h1 {
+    color: #007bff;
+}
+
+#question-text {
+        color: black; /* Set the text color to black */
+    }
+
+.question-box {
+    font-size: 20px;
+    margin: 20px 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.option-btn:hover {
+    background: #1403ce;
+}
+
+#result-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#next-btn {
+    background: green;
+    color: white;
+    padding: 10px;
+    border: none;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    transition: background 0.3s;
+}
+
+#next-btn:hover {
+    background: darkgreen;
+}
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Mythology Quiz</h1>
+        <div class="question-box">
+            <p id="question-text">Loading question...</p>
+        </div>
+        <div class="options">
+            <button class="option-btn" onclick="checkAnswer(0)">Option 1</button>
+            <button class="option-btn" onclick="checkAnswer(1)">Option 2</button>
+            <button class="option-btn" onclick="checkAnswer(2)">Option 3</button>
+            <button class="option-btn" onclick="checkAnswer(3)">Option 4</button>
+        </div>
+        <p id="result-text"></p>
+        <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+        <button id="dashboard-btn" onclick="redirectToDashboard()" style="display: none;">Go to Dashboard</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+  const questions = [
+  {
+    question: "Who is the king of Ayodhya in the Ramayana?",
+    options: ["Ravana", "Dasaratha", "Bharata", "Janaka"],
+    answer: 1
+  },
+  {
+    question: "Which river is believed to have originated from Lord Shiva’s hair?",
+    options: ["Yamuna", "Ganga", "Saraswati", "Godavari"],
+    answer: 1
+  },
+  {
+    question: "Who wrote the Mahabharata?",
+    options: ["Valmiki", "Tulsidas", "Vyasa", "Kalidasa"],
+    answer: 2
+  },
+  {
+    question: "What is the weapon of Lord Vishnu?",
+    options: ["Trishul", "Sudarsana Chakra", "Bow", "Gada"],
+    answer: 1
+  },
+  {
+    question: "Who is the wife of Lord Shiva?",
+    options: ["Lakshmi", "Sita", "Parvati", "Radha"],
+    answer: 2
+  },
+  {
+    question: "Which demon was killed by Goddess Durga?",
+    options: ["Kansa", "Mahishasura", "Ravana", "Hiranyakashipu"],
+    answer: 1
+  },
+  {
+    question: "What is the name of Arjuna’s bow?",
+    options: ["Gandiva", "Pinaka", "Sharanga", "Vajra"],
+    answer: 0
+  },
+  {
+    question: "Who was the foster father of Lord Krishna?",
+    options: ["Vasudeva", "Kamsa", "Nanda", "Dasharatha"],
+    answer: 2
+  },
+  {
+    question: "How many heads does Lord Brahma have?",
+    options: ["Four", "Three", "Five", "Ten"],
+    answer: 0
+  },
+  {
+    question: "Which epic features the Kurukshetra war?",
+    options: ["Ramayana", "Mahabharata", "Bhagavad Gita", "Rigveda"],
+    answer: 1
+  }
+  ];
+
+  let currentQuestionIndex = 0;
+  let score = 0;
+
+  const questionText = document.getElementById("question-text");
+  const optionButtons = document.querySelectorAll(".option-btn");
+  const resultText = document.getElementById("result-text");
+  const nextButton = document.getElementById("next-btn");
+
+  function loadQuestion() {
+      document.querySelector(".quiz-container").style.opacity = "0"; // Fade out transition
+      setTimeout(() => {
+          let currentQuestion = questions[currentQuestionIndex];
+          questionText.textContent = currentQuestion.question;
+          
+          optionButtons.forEach((button, index) => {
+              button.textContent = currentQuestion.options[index];
+              button.disabled = false;
+              button.style.background = "#007bff"; // Reset button color
+          });
+
+          resultText.textContent = "";
+          nextButton.style.display = "none";
+          document.querySelector(".quiz-container").style.opacity = "1"; // Fade in transition
+      }, 500);
+  }
+
+  function checkAnswer(selectedIndex) {
+      let correctIndex = questions[currentQuestionIndex].answer;
+      
+      if (selectedIndex === correctIndex) {
+          optionButtons[selectedIndex].style.background = "green";
+          resultText.textContent = "Correct!";
+          score++;
+      } else {
+          optionButtons[selectedIndex].style.background = "red";
+          optionButtons[correctIndex].style.background = "green";
+          resultText.textContent = "Wrong!";
+      }
+
+      optionButtons.forEach(button => button.disabled = true);
+      nextButton.style.display = "inline-block";
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        questionText.textContent = `Quiz Over! Your score: ${score} / ${questions.length}`;
+        document.querySelector(".options").style.display = "none";
+        nextButton.style.display = "none";
+
+        // Show the "Go to Dashboard" button
+        const dashboardButton = document.getElementById("dashboard-btn");
+        dashboardButton.style.display = "inline-block";
+
+        // Send the score to the backend
+        updateScore(score);
+    }
+}
+
+function redirectToDashboard() {
+    window.location.href = "http://localhost/QUIZZO/www/dashboard.html"; // Replace with the actual path to your dashboard
+}
+
+function getSessionID() {
+    const cookies = document.cookie.split("; ");
+    for (let i = 0; i < cookies.length; i++) {
+        const [key, value] = cookies[i].split("=");
+        if (key === "sessionID") {
+            return value;
+        }
+    }
+    return null; // Return null if sessionID is not found
+}
+
+function updateScore(score) {
+    const sessionID = getSessionID(); // Retrieve the session ID from cookies
+
+    if (!sessionID) {
+        console.error("No session ID found. User is not logged in.");
+        return;
+    }
+
+    // Fetch the username associated with the session ID from the server
+    fetch('http://localhost/cgi-bin/getUsername.cgi', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `sessionID=${encodeURIComponent(sessionID)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const username = data.username; // Retrieve the username from the server response
+
+            // Send the score to the backend for the logged-in user
+            fetch('http://localhost/cgi-bin/updateScore.cgi', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `username=${encodeURIComponent(username)}&score=${score}`
+            })
+            .then(response => response.json())
+            .then(updateData => {
+                if (updateData.success) {
+                    console.log("Score updated successfully!");
+                } else {
+                    console.error("Failed to update score:", updateData.message);
+                }
+            })
+            .catch(error => console.error("Error updating score:", error));
+        } else {
+            console.error("Failed to retrieve username:", data.message);
+        }
+    })
+    .catch(error => console.error("Error retrieving username:", error));
+}
+  window.onload = loadQuestion;
+</script>

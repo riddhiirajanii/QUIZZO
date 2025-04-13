@@ -10,15 +10,20 @@
     <div class="signup-container">
         <h1>QUIZZO</h1>
         <p class="subtitle">Create a new account</p>
-        <form action="http://localhost/cgi-bin/signup.exe
-" method="post">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <form method="post" action="/cgi-bin/signup.exe">
+           
+            <input type="text" id="username" name="username" placeholder="Enter your username" required><br><br>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required><br><br>
+            <input type="password" id="password" name="password" placeholder="Create a password" required><br><br>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required><br><br>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required><br><br>
+            <input type="text" id="course" name="course" placeholder="Enter your course (e.g., B.Tech CSE)" required><br><br>
+            <input type="text" id="rollnumber" name="rollnumber" placeholder="Enter your roll number" required><br><br>
+          
             <button type="submit">Sign Up</button>
-            <p class="login-link">Already have an account? <a href="login.html">Log In</a></p>
-        </form>
+          </form>
+          
+        <p class="login-link">Already have an account? <a href="login.html">Log in</a></p>          
     </div>
 </body>
 </html>

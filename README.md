@@ -1,4 +1,4 @@
-# QUIZZO - Online Quiz System
++# QUIZZO - Online Quiz System
 
 **QUIZZO** is a simple, offline-compatible online quiz system built using HTML, CSS, JavaScript (frontend), C with CGI for backend processing, and Python for advanced search functionality. It runs locally using **XAMPP** for Apache hosting and CGI support.
 
@@ -29,7 +29,24 @@ QUIZZO/
 ## 🚀 How to Run
 
 ###  1. Set up XAMPP for CGI
-- Place `signup.exe`, `login.exe`, and other CGI files in `C:/xampp/cgi-bin/`
+1. Install XAMPP (if not already).
+2. Copy the contents of this folder to your XAMPP installation:
+   - Copy `cgi-bin/` contents to `C:/xampp/cgi-bin/`
+   - Locate `htdocs`. Create the folder `QUIZZO` inside it, followed by `www` inside `QUIZZO`
+   - Copy `www/` contents to `C:/xampp/htdocs/QUIZZO/www/`
+   - Copy `quiz_data.json` to `C:/xampp/htdocs/QUIZZO/data/`
+3. Start Apache from XAMPP Control Panel.
+4. Open your browser and visit:
+   http://localhost/QUIZZO/login.html
+5. Click on sign-up and enter the following user credentials:
+testuser
+testemail@gmail.com
+testpassword
+confirm password: testpassword
+9876543210
+BTech
+2401CS01
+
 - Ensure `httpd.conf` contains:
   ```apache
   ScriptAlias /cgi-bin/ "C:/xampp/cgi-bin/"
@@ -51,16 +68,11 @@ QUIZZO/
 1. 🔐 Signup and login using CGI (C backend)
 
 2. 🧑 User dashboard with:
-
-3. Profile (username, rank, score)
-
-4. Leaderboard (dynamically updated)
-
-5. Quizzes (clickable links)
-
-6. 🔎 Live search bar for quizzes (tag-based search via Python Flask)
-
-7. ✨ Ambient UI with scrollable dropdowns and filters
+   - Profile (username, rank, score)
+   - Leaderboard (dynamically updated)
+   - Quizzes (clickable links)
+   - 🔎 Live search bar for quizzes (tag-based search via Python Flask)
+   - ✨ Ambient UI with scrollable dropdowns and filters
 
 📌 Notes
 1. All user data is stored in users.txt

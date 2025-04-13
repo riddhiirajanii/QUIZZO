@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <title>Edit Profile - QUIZZO</title>
+  <style>
+
+    .edit-container {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #2e2e2e;
+      color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #004040;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #063731;
+    }
+  </style>
+</head>
+<body>
+
+<div class="edit-container">
+  <h2>Edit Profile</h2>
+  <form method="post" action="/cgi-bin/update_profile.exe">
+  <input type="hidden" name="old_username" id="old_username">
+<label for="username">Username:</label>
+  <input type="text" name="username" id="username">
+<label for="email">Email:</label>
+  <input type="email" name="email" id="email">
+<label for="password">Password:</label>
+  <input type="password" name="password" id="password">
+<labek for="email"> Phone:</labek>  
+  <input type="text" name="phone" id="phone">
+<label for="course">Course:</label>
+  <input type="text" name="course" id="course">
+<label for="rollnumber">Roll Number:</label>
+  <input type="text" name="rollnumber" id="rollnumber">
+
+  <input type="submit" value="Update Profile">
+</form>
+<script>
+fetch("/cgi-bin/profile.exe")
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById("old_username").value = data.username;
+      document.getElementById("username").value = data.username;
+      document.getElementById("email").value = data.email;
+      document.getElementById("phone").value = data.phone;
+      document.getElementById("course").value = data.course;
+      document.getElementById("rollnumber").value = data.rollnumber;
+    } else {
+      alert("Error loading profile: " + data.message);
+    }
+  });
+</script>
+
+  
+</div>
+</body>
+</html>

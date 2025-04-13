@@ -199,6 +199,78 @@
     background-color: #0056b3;
     transform: scale(1.05);
   }
+
+  body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#toggleSidebar {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  z-index: 1001;
+  cursor: pointer;
+  text-align: left;
+}
+
+#sidebar {
+  height: 100vh;
+  width: 220px;
+  background-color: #202123;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: -240px; /* hidden initially */
+  transition: 0.3s ease;
+  z-index: 1000;
+  padding: 60px 20px 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.4);
+}
+
+#sidebar.active {
+  left: 0;
+}
+
+#sidebar h2 {
+  color: #10a37f;
+  margin-bottom: 30px;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+#sidebar ul li {
+  margin: 20px 0;
+}
+
+#sidebar ul li a,
+#sidebar ul li button {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+  text-align: left;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+#sidebar ul li a:hover,
+#sidebar ul li button:hover {
+  background-color: #343541;
+}
+
+
+
     </style>
 <script>
 
@@ -295,9 +367,38 @@
         searchBox.addEventListener("input", searchQuiz);
     }
     };
+    
+
 </script>
 </head>
 <body>
+           
+</div>
+<button id="toggleSidebar">☰</button>
+
+<!-- Sidebar -->
+<div id="sidebar">
+<ul>
+<li><a href="edit_profile.html">✏️ Edit Profile</a></li>
+<li><a href="progress.html">📈 Your Progress</a></li>
+<li><button onclick="logout()">⎋ Logout</button></li>
+</ul>
+</div>
+<script>
+  const toggleBtn = document.getElementById("toggleSidebar");
+  const sidebar = document.getElementById("sidebar");
+
+  toggleBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
+
+  function logout() {
+    document.cookie = "sessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = "/QUIZZO/www/login.html";
+  }
+</script>
+
+
     <div class="dashboard-container">
         <header>
             <h1>Welcome to QUIZZO</h1>
@@ -341,8 +442,6 @@
                 </ul>
             </div>
         </div>
-        
-        
-    </div>
+ 
 </body>
 </html>
